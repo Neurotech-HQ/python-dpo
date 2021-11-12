@@ -2,7 +2,7 @@
 
 # [python-dpo](https://github.com/Kalebu/python-dpo)
 
-A python package to easy the integration with Direct Online Pay (DPO)  which easily allow you to integrate payment integrations only once without having to deal individually;
+A python package to easy the integration with Direct Online Pay (DPO)  which easily allow you easily integrate  with payment options once without having to deal with each of them individually;
 
 - [Mpesa](https://vodacom.co.tz/mpesa)
 - [TigoPesa](https://www.tigo.co.tz/tigo-pesa)
