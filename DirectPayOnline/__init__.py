@@ -11,9 +11,9 @@ From Multiple Payments Channel (Mpesa, TigoPesa, AirtelMoney) without having to 
 import os
 import requests
 from dotenv import load_dotenv
-from DirectPayOnline.utils import xml_to_dict
-from DirectPayOnline.utils.validators import CreateTokenModel
-from DirectPayOnline.utils.xml_templates import create_token_xml
+from .utils import xml_to_dict
+from .utils.validators import CreateTokenModel
+from .utils.xml_templates import create_token_xml
 
 # Load environment variables
 load_dotenv()
