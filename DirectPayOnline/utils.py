@@ -1,7 +1,3 @@
-"""
-Utilities functions for Direct Online Pay Library
-"""
-
 import json
 import xmltodict
 

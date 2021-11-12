@@ -10,13 +10,9 @@ From Multiple Payments Channel (Mpesa, TigoPesa, AirtelMoney) without having to 
 
 import os
 import requests
-from dotenv import load_dotenv
 from .utils import xml_to_dict
-from .utils.validators import CreateTokenModel
-from .utils.xml_templates import create_token_xml
-
-# Load environment variables
-load_dotenv()
+from .validators import CreateTokenModel
+from .xml_templates import create_token_xml
 
 
 class DPO(object):

@@ -10,7 +10,7 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="DirectPayOnline",
-    version="0.1",
+    version="0.3",
     description="A python package to easy the integration with Direct Online Pay (Mpesa, TigoPesa, AirtelMoney, Card Payments)",
     long_description=long_description,
     long_description_content_type="text/markdown",

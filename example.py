@@ -1,5 +1,8 @@
+from dotenv import load_dotenv
 from DirectPayOnline import DPO
 
+# Load environment variables
+load_dotenv()
 
 gateway = DPO()
 transtoken = gateway.create_token(

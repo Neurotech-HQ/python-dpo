@@ -19,12 +19,12 @@ A python package to easy the integration with Direct Online Pay (DPO)  which eas
 To gets started with [python-dpo](https://github.com/Kalebu/python-dpo) you need to install the package first, here how;
 
 ```bash
-pip install DirectPayOnline
+pip install DirectPayOnline --upgrade
 ```
 
 ## Configuring .env 
 
-You can configure some variables directly on **.env** file and they will be loaded automatically by the Package.
+You can configure some variables directly on **.env** file and  so they will be loaded by the dotenv package.
 
 Here some of importants of things you to configure;
 
@@ -47,6 +47,8 @@ COMPANY_REFERENCE=34TESTREFF
 ## Example of usage
 
 ```python
+>>> from dotenv import load_dotenv
+>>> load_dotenv() # loading environment variables 
 >>> from DirectPayOnline import DPO
 >>> dpo = DPO(sandbox=False)
 >>> token = dpo.create_token({'amount': 400, "service_description": "Sarufi.io subscription"})
