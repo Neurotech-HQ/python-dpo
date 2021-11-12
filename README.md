@@ -19,7 +19,21 @@ A python package to easy the integration with Direct Online Pay (DPO)  which eas
 To gets started with [python-dpo](https://github.com/Kalebu/python-dpo) you need to install the package first, here how;
 
 ```bash
-pip install python-dpo
+pip install python-dpo (not-yet)
+```
+
+## Configuring .env 
+
+You can configure some variables directly on **.env** file and they will be loaded automatically by the Package.
+
+Here some of importants of things you to configure;
+
+```bash
+COMPANY_TOKEN=9F416C11-127B-4DE2-AC7F-D5710E4C5E0A
+CURRENCY=TZS
+ADDRESS=Tanzania
+SERVICE_TYPE=3854
+COMPANY_REFERENCE=34TESTREFF
 ```
 
 ## How does it work ?
@@ -32,7 +46,15 @@ pip install python-dpo
 
 ## Example of usage
 
-Coming soon.
+```python
+>>> from DirectPayOnline import DPO
+>>> dpo = DPO(sandbox=False)
+>>> token = dpo.create_token({'amount': 400, "service_description": "Sarufi.io subscription"})
+>>> dpo.create_payment_url(token)
+'https://secure.3gdirectpay.com/payv2.php?ID=1D0CC035-40E5-44A3-B5EF-034A34AD33E9'
+```
+
+When a user visit a payment_url, he/she will have an option to pay through preffered payment option, where if its a mastercard or visa or mobile money (Mpesa, TigoPesa, AirtelMoney).
 
 ## Issues ?
 
