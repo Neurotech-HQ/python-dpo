@@ -1,0 +1,9 @@
+certifi==2021.10.8
+charset-normalizer==2.0.7
+idna==3.3
+pydantic==1.8.2
+python-dotenv==0.19.2
+requests==2.26.0
+typing-extensions==3.10.0.2
+urllib3==1.26.7
+xmltodict==0.12.0
