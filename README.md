@@ -19,7 +19,7 @@ A python package to easy the integration with Direct Online Pay (DPO)  which eas
 To gets started with [python-dpo](https://github.com/Kalebu/python-dpo) you need to install the package first, here how;
 
 ```bash
-pip install python-dpo (not-yet)
+pip install DirectPayOnline
 ```
 
 ## Configuring .env 
