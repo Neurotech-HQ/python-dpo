@@ -130,3 +130,13 @@ class VerifyTokenModel(BaseModel):
     @staticmethod
     def validate(body: dict):
         return VerifyTokenModel(**body)
+
+
+class VerifyXpayModel(BaseModel):
+    company_token: str
+    request_type: str = "verifyXpay"
+    xpay_id: str
+
+    @staticmethod
+    def validate(body: dict):
+        return VerifyXpayModel(**body)

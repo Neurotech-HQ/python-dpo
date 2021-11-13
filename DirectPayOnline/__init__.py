@@ -18,6 +18,7 @@ from .validators import (
     RefundTokenModel,
     UpdateTokenModel,
     VerifyTokenModel,
+    VerifyXpayModel,
 )
 from .xml_templates import (
     create_token_xml,
@@ -26,6 +27,7 @@ from .xml_templates import (
     create_refund_token_xml,
     create_update_token_xml,
     create_verify_token_xml,
+    create_verify_xpay_xml,
 )
 
 
@@ -237,4 +239,15 @@ class DPO(object):
 
         # construct xml request body and send it to DPO API
         xml_data = create_verify_token_xml(query)
+        return self.post(xml_data)
+
+    def verify_xpay(self, user_query: dict):
+        # get final query
+        final_query = self.get_final_query(user_query)
+
+        # validate query
+        query = VerifyXpayModel.validate(final_query).dict()
+
+        # construct xml request body and send it to DPO API
+        xml_data = create_verify_xpay_xml(query)
         return self.post(xml_data)

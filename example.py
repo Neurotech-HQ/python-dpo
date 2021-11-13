@@ -6,8 +6,8 @@ load_dotenv()
 
 gateway = DPO()
 user_query = {
-    "amount": 34500,
-    "service_description": "Buying books",
+    "amount": 50000,
+    "service_description": "A Tour  to Mbudya",
     "customer_name": "Jordan Kalebu",
     "customer_email": "isaackeinstein@gmail.com",
 }
@@ -47,3 +47,10 @@ print(response)
 query = {"transtoken": transtoken}
 response = gateway.verify_token(query)
 print(response)
+
+
+# ============== verify XPay ========================
+query = {"xpay_id": "124334323324"}
+response = gateway.verify_xpay(query)
+print(response)
+print("Damn")
