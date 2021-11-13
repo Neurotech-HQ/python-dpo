@@ -60,12 +60,24 @@ print(response)
 # print("Damn")
 
 
-# =============== mobile payment options ===============
-response = gateway.mobile_payment_options(query)
-print(response)
+# # =============== mobile payment options ===============
+# response = gateway.mobile_payment_options(query)
+# print(response)
 
-# =============== bank transfer options ====================
-response = gateway.bank_transfer_options(query)
+# # =============== bank transfer options ====================
+# response = gateway.bank_transfer_options(query)
+# print(response)
+
+# ============== charge credit card =========================
+query.update(
+    {
+        "card_number": 122323232323,
+        "card_expiry": "0242",
+        "card_cvv": "323",
+        "card_holder_name": "Jordan Gwalugano",
+    }
+)
+response = gateway.charge_credit_card(query)
 print(response)
 
 print("==========================DAMN=========================")

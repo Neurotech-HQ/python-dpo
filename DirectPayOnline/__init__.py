@@ -23,6 +23,7 @@ from .validators import (
     MobilePaymentsOptionsModel,
     ChargeTokenAuthModel,
     BankTransferOptionsModel,
+    ChargeCreditCardModel,
 )
 from .xml_templates import (
     create_token_xml,
@@ -36,6 +37,7 @@ from .xml_templates import (
     create_mobile_payment_options_xml,
     create_charge_token_auth_xml,
     create_bank_transfer_options_xml,
+    create_charge_credit_card_xml,
 )
 
 
@@ -172,7 +174,7 @@ class DPO(object):
         final_query = self.get_final_query(user_query)
 
         # validate query
-        query = CreateTokenModel.validate(final_query).dict()
+        query = CreateTokenModel(**final_query).dict()
 
         # construct xml request body and send it to DPO API
         xml_data = create_token_xml(query)
@@ -192,7 +194,7 @@ class DPO(object):
         final_query = self.get_final_query(query)
 
         # validate query
-        query = EmailtoTokenModel.validate(final_query).dict()
+        query = EmailtoTokenModel(**final_query).dict()
 
         # construct xml request body and send it to DPO API
         xml_data = create_email_to_token_xml(query)
@@ -210,7 +212,7 @@ class DPO(object):
         final_query = self.get_final_query(user_query)
 
         # validate query
-        query = CreateMvisaQrcodeModel.validate(final_query).dict()
+        query = CreateMvisaQrcodeModel(**final_query).dict()
 
         # construct xml request body and send it to DPO API
         xml_data = create_mvisa_qrcode_xml(query)
@@ -221,7 +223,7 @@ class DPO(object):
         final_query = self.get_final_query(query)
 
         # validate query
-        query = RefundTokenModel.validate(final_query).dict()
+        query = RefundTokenModel(**final_query).dict()
 
         # construct xml request body and send it to DPO API
         xml_data = create_refund_token_xml(query)
@@ -232,7 +234,7 @@ class DPO(object):
         final_query = self.get_final_query(query)
 
         # validate query
-        query = UpdateTokenModel.validate(final_query).dict()
+        query = UpdateTokenModel(**final_query).dict()
 
         # construct xml request body and send it to DPO API
         xml_data = create_update_token_xml(query)
@@ -243,7 +245,7 @@ class DPO(object):
         final_query = self.get_final_query(user_query)
 
         # validate query
-        query = VerifyTokenModel.validate(final_query).dict()
+        query = VerifyTokenModel(**final_query).dict()
 
         # construct xml request body and send it to DPO API
         xml_data = create_verify_token_xml(query)
@@ -254,7 +256,7 @@ class DPO(object):
         final_query = self.get_final_query(user_query)
 
         # validate query
-        query = VerifyXpayModel.validate(final_query).dict()
+        query = VerifyXpayModel(**final_query).dict()
 
         # construct xml request body and send it to DPO API
         xml_data = create_verify_xpay_xml(query)
@@ -265,7 +267,7 @@ class DPO(object):
         final_query = self.get_final_query(user_query)
 
         # validate query
-        query = CancelTokenModel.validate(final_query).dict()
+        query = CancelTokenModel(**final_query).dict()
 
         # construct xml request body and send it to DPO API
         xml_data = create_cancel_token_xml(query)
@@ -281,7 +283,7 @@ class DPO(object):
         final_query = self.get_final_query(user_query)
 
         # validate the query
-        query = MobilePaymentsOptionsModel.validate(final_query).dict()
+        query = MobilePaymentsOptionsModel(**final_query).dict()
         print(query)
         # construct xml and send request to DPO API
         xml_data = create_mobile_payment_options_xml(query)
@@ -292,7 +294,7 @@ class DPO(object):
         final_query = self.get_final_query(user_query)
 
         # validate the query
-        query = ChargeTokenAuthModel.validate(final_query)
+        query = ChargeTokenAuthModel(**final_query)
 
         # construct xml and send it to DPO API
         xml = create_charge_token_auth_xml(query)
@@ -303,8 +305,19 @@ class DPO(object):
         final_query = self.get_final_query(user_query)
 
         # validate the query
-        query = BankTransferOptionsModel.validate(final_query).dict()
+        query = BankTransferOptionsModel(**final_query).dict()
 
         # construct xml and send it to DPO API
         xml = create_bank_transfer_options_xml(query)
+        return self.post(xml)
+
+    def charge_credit_card(self, user_query: dict):
+        # get the final query
+        final_query = self.get_final_query(user_query)
+
+        # validate the query
+        query = ChargeCreditCardModel(**final_query).dict()
+
+        # construct xml and send it to DPO
+        xml = create_charge_credit_card_xml(query)
         return self.post(xml)

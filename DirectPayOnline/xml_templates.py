@@ -112,6 +112,19 @@ verify_xpay_xml_string = (
     """
 )
 
+# ============== XML template (charge_credit card )==============
+credit_card_xml_string = (
+    header_xml
+    + """
+    <TransactionToken>{transtoken}</TransactionToken>
+    <CreditCardNumber>{card_number}</CreditCardNumber>
+    <CreditCardExpiry>{card_expiry}</CreditCardExpiry>
+    <CreditCardCVV>{card_cvv}</CreditCardCVV>
+    <CardHolderName>{card_holder_name}</CardHolderName>
+    </API3G>
+    """
+)
+
 
 def remove_none_tags(xml_string: str) -> str:
     """
@@ -208,7 +221,15 @@ def create_charge_token_auth_xml(data: dict) -> str:
 
 def create_bank_transfer_options_xml(data: dict) -> str:
     """
-    Function to creating XML for Bank transfers options
+    Function for creating XML for Bank transfers options
     """
     data = verify_token_xml_tring.format(**data)
+    return remove_none_tags(data)
+
+
+def create_charge_credit_card_xml(data: dict) -> str:
+    """
+    Function for creating XML to charge credit card
+    """
+    data = credit_card_xml_string.format(**data)
     return remove_none_tags(data)

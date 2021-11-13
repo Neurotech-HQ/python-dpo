@@ -78,37 +78,23 @@ class CreateTokenModel(BaseModel):
     traveller_phone: str = None
     traveller_phone_prefix: int = None
 
-    @staticmethod
-    def validate(body: dict):
-        return CreateTokenModel(**body)
-
 
 class UpdateTokenModel(CreateTokenModel):
     request_type = "updateToken"
     transtoken: str
     user_token: str = None
 
-    @staticmethod
-    def validate(body: dict):
-        return UpdateTokenModel(**body)
-
 
 class EmailtoTokenModel(BaseModel):
-    company_token: str
     request_type: str = "emailToToken"
+    company_token: str
     transtoken: str
 
-    @staticmethod
-    def validate(body: dict):
-        return EmailtoTokenModel(**body)
 
-
-class CreateMvisaQrcodeModel(EmailtoTokenModel):
+class CreateMvisaQrcodeModel(BaseModel):
     request_type: str = "createMvisaQRcode"
-
-    @staticmethod
-    def validate(body: dict):
-        return CreateMvisaQrcodeModel(**body)
+    company_token: str
+    transtoken: str
 
 
 class RefundTokenModel(BaseModel):
@@ -118,19 +104,11 @@ class RefundTokenModel(BaseModel):
     amount: float
     description: str = None
 
-    @staticmethod
-    def validate(body: dict):
-        return RefundTokenModel(**body)
-
 
 class VerifyTokenModel(BaseModel):
     company_token: str
     request_type: str = "verifyToken"
     transtoken: str
-
-    @staticmethod
-    def validate(body: dict):
-        return VerifyTokenModel(**body)
 
 
 class VerifyXpayModel(BaseModel):
@@ -138,19 +116,11 @@ class VerifyXpayModel(BaseModel):
     request_type: str = "verifyXpay"
     xpay_id: str
 
-    @staticmethod
-    def validate(body: dict):
-        return VerifyXpayModel(**body)
-
 
 class CancelTokenModel(BaseModel):
     request_type: str = "cancelToken"
     company_token: str
     transtoken: str
-
-    @staticmethod
-    def validate(body: dict):
-        return CancelTokenModel(**body)
 
 
 class MobilePaymentsOptionsModel(BaseModel):
@@ -158,19 +128,11 @@ class MobilePaymentsOptionsModel(BaseModel):
     company_token: str
     transtoken: str
 
-    @staticmethod
-    def validate(body: dict):
-        return MobilePaymentsOptionsModel(**body)
-
 
 class ChargeTokenAuthModel(BaseModel):
     request_type: str = "chargeTokenAuth"
     company_token: str
     transtoken: str
-
-    @staticmethod
-    def validate(body: dict):
-        return ChargeTokenAuthModel(**body)
 
 
 class BankTransferOptionsModel(BaseModel):
@@ -178,6 +140,14 @@ class BankTransferOptionsModel(BaseModel):
     company_token: str
     transtoken: str
 
-    @staticmethod
-    def validate(body: dict):
-        return BankTransferOptionsModel(**body)
+
+class ChargeCreditCardModel(BaseModel):
+    request_type: str = "chargeTokenCreditCard"
+    company_token: str
+    transtoken: str
+    card_number: int
+    card_expiry: str
+    card_cvv: str
+    card_holder_name: str
+    charge_type: str = None
+    three_d: str = None
