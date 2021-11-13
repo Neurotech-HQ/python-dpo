@@ -188,3 +188,11 @@ def create_cancel_token_xml(data: dict) -> str:
     """
     data = verify_token_xml_tring.format(**data)
     return remove_none_tags(data)
+
+
+def create_mobile_payment_options_xml(data: dict) -> str:
+    """
+    Function for creating XML mobile payment options
+    """
+    data = verify_token_xml_tring.format(**data)
+    return remove_none_tags(data)

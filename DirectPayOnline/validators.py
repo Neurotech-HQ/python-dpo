@@ -148,3 +148,11 @@ class CancelTokenModel(VerifyTokenModel):
     @staticmethod
     def validate(body: dict):
         return CancelTokenModel(**body)
+
+
+class MobilePaymentsOptionsModel(VerifyTokenModel):
+    request_type: str = "GetMobilePaymentOptions"
+
+    @staticmethod
+    def validate(body: dict):
+        return MobilePaymentsOptionsModel(**body)
