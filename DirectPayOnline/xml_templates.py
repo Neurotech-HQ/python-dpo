@@ -204,3 +204,11 @@ def create_charge_token_auth_xml(data: dict) -> str:
     """
     data = verify_token_xml_tring.format(**data)
     return remove_none_tags(data)
+
+
+def create_bank_transfer_options_xml(data: dict) -> str:
+    """
+    Function to creating XML for Bank transfers options
+    """
+    data = verify_token_xml_tring.format(**data)
+    return remove_none_tags(data)

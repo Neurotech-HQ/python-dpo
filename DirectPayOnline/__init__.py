@@ -22,6 +22,7 @@ from .validators import (
     CancelTokenModel,
     MobilePaymentsOptionsModel,
     ChargeTokenAuthModel,
+    BankTransferOptionsModel,
 )
 from .xml_templates import (
     create_token_xml,
@@ -34,6 +35,7 @@ from .xml_templates import (
     create_cancel_token_xml,
     create_mobile_payment_options_xml,
     create_charge_token_auth_xml,
+    create_bank_transfer_options_xml,
 )
 
 
@@ -294,4 +296,15 @@ class DPO(object):
 
         # construct xml and send it to DPO API
         xml = create_charge_token_auth_xml(query)
+        return self.post(xml)
+
+    def bank_transfer_options(self, user_query: dict):
+        # get final query
+        final_query = self.get_final_query(user_query)
+
+        # validate the query
+        query = BankTransferOptionsModel.validate(final_query).dict()
+
+        # construct xml and send it to DPO API
+        xml = create_bank_transfer_options_xml(query)
         return self.post(xml)

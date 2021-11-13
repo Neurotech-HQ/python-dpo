@@ -171,3 +171,13 @@ class ChargeTokenAuthModel(BaseModel):
     @staticmethod
     def validate(body: dict):
         return ChargeTokenAuthModel(**body)
+
+
+class BankTransferOptionsModel(BaseModel):
+    request_type: str = "GetBankTransferOptions"
+    company_token: str
+    transtoken: str
+
+    @staticmethod
+    def validate(body: dict):
+        return BankTransferOptionsModel(**body)
