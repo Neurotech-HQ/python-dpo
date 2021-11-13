@@ -120,3 +120,13 @@ class RefundTokenModel(BaseModel):
     @staticmethod
     def validate(body: dict):
         return RefundTokenModel(**body)
+
+
+class VerifyTokenModel(BaseModel):
+    company_token: str
+    request_type: str = "verifyToken"
+    transtoken: str
+
+    @staticmethod
+    def validate(body: dict):
+        return VerifyTokenModel(**body)

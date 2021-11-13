@@ -95,6 +95,13 @@ update_token_xml_string = (
     """
 )
 
+verify_token_xml_tring = header_xml + (
+    """
+    <TransactionToken>{transtoken}</TransactionToken>
+    </API3G>
+    """
+)
+
 
 def remove_none_tags(xml_string: str) -> str:
     """
@@ -146,4 +153,12 @@ def create_update_token_xml(data: dict) -> str:
     Function for creating XML for updating token request.
     """
     data = update_token_xml_string.format(**data)
+    return remove_none_tags(data)
+
+
+def create_verify_token_xml(data: dict) -> str:
+    """
+    Function for creating XML for verifying the token request.
+    """
+    data = verify_token_xml_tring.format(**data)
     return remove_none_tags(data)

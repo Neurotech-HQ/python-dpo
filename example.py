@@ -41,3 +41,9 @@ print(response)
 user_query.update({"customer_name": "Mikael Jordan"})
 response = gateway.update_token(user_query)
 print(response)
+
+
+# ==============verify transaction token ============
+query = {"transtoken": transtoken}
+response = gateway.verify_token(query)
+print(response)
