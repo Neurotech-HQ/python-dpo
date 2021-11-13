@@ -22,3 +22,7 @@ print(payment_url)
 user_query.update({"transtoken": transtoken})
 response = gateway.email_to_token(user_query)
 print(response)
+
+# ========== createmvisaQRCODE ====================
+response = gateway.create_mvisa_qrcode(user_query)
+print(response)

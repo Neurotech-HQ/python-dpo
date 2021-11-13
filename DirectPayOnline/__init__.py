@@ -11,8 +11,12 @@ From Multiple Payments Channel (Mpesa, TigoPesa, AirtelMoney) without having to 
 import os
 import requests
 from .utils import xml_to_dict
-from .validators import CreateTokenModel, EmailtoTokenModel
-from .xml_templates import create_token_xml, create_email_to_token_xml
+from .validators import CreateTokenModel, EmailtoTokenModel, CreateMvisaQrcodeModel
+from .xml_templates import (
+    create_token_xml,
+    create_email_to_token_xml,
+    create_mvisa_qrcode_xml,
+)
 
 
 class DPO(object):
@@ -191,7 +195,38 @@ class DPO(object):
         query = response.dict()
 
         xml = create_email_to_token_xml(query)
-        print(xml)
+        result = requests.post(
+            f"{self.__base_url}/API/v6/", data=xml, headers=self.__header
+        )
+
+        if result.status_code != 200:
+            raise Exception(f"Error {result.status_code}")
+
+        response = dict(xml_to_dict(result.text))
+        return response
+
+    def create_mvisa_qrcode(self, user_query: dict) -> str:
+        """
+        Create Mvisa Qrcode
+
+        :param query:
+        :return:
+        """
+        if not isinstance(user_query, dict):
+            raise TypeError("Query must be a dictionary")
+
+        # get final query
+        final_query = self.get_final_query(user_query)
+
+        # validate query
+        response = CreateMvisaQrcodeModel.validate(final_query)
+        if not isinstance(response, CreateMvisaQrcodeModel):
+            raise ValueError(f"Invalid Query {response}")
+
+        # get query from modal
+        query = response.dict()
+
+        xml = create_mvisa_qrcode_xml(query)
         result = requests.post(
             f"{self.__base_url}/API/v6/", data=xml, headers=self.__header
         )

@@ -104,3 +104,15 @@ class EmailtoTokenModel(BaseModel):
         except Exception as e:
             print(e.__doc__)
             return e
+
+
+class CreateMvisaQrcodeModel(EmailtoTokenModel):
+    request_type: str = "createMvisaQRcode"
+
+    @staticmethod
+    def validate(body: dict):
+        try:
+            return CreateMvisaQrcodeModel(**body)
+        except Exception as e:
+            print(e.__doc__)
+            return e

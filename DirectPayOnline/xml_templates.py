@@ -82,3 +82,11 @@ def create_token_xml(data: dict) -> str:
     """
     data = create_token_xml_string.format(**data)
     return remove_none_tags(data)
+
+
+def create_mvisa_qrcode_xml(data: dict) -> str:
+    """
+    Function for creating XML for creating token request.
+    """
+    data = email_to_token_xml_string.format(**data)
+    return remove_none_tags(data)
