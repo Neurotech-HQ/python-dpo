@@ -27,7 +27,7 @@ setup(
         "payment aggregator",
         "mobile money package",
     ],
-    install_requires=["requests", "xmltodict", "pydantic", "python-dotenv"],
+    install_requires=["requests", "xmltodict", "pydantic"],
     include_package_data=True,
     python_requires=">=3.6",
     classifiers=[
