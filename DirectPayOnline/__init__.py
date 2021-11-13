@@ -11,8 +11,8 @@ From Multiple Payments Channel (Mpesa, TigoPesa, AirtelMoney) without having to 
 import os
 import requests
 from .utils import xml_to_dict
-from .validators import CreateTokenModel
-from .xml_templates import create_token_xml
+from .validators import CreateTokenModel, EmailtoTokenModel
+from .xml_templates import create_token_xml, create_email_to_token_xml
 
 
 class DPO(object):
@@ -116,6 +116,18 @@ class DPO(object):
             "service_type": os.getenv("SERVICE_TYPE"),
         }
 
+    def get_final_query(self, user_query: dict) -> dict:
+        """
+        Get Final Query
+
+        :param query:
+        :return:
+        """
+        # get config query and append it to user_query
+        config_query = self.get_initial_config()
+        config_query.update(user_query)
+        return config_query
+
     def create_token(self, user_query: dict) -> dict:
         """
         Create Token
@@ -123,17 +135,14 @@ class DPO(object):
         :param query:
         :return:
         """
-        if not user_query:
-            raise ValueError("Query is required")
         if not isinstance(user_query, dict):
             raise TypeError("Query must be a dictionary")
 
-        # get config query and append it to user_query
-        config_query = self.get_initial_config()
-        config_query.update(user_query)
+        # get final query
+        final_query = self.get_final_query(user_query)
 
         # validate query
-        response = CreateTokenModel.validate(config_query)
+        response = CreateTokenModel.validate(final_query)
         if not isinstance(response, CreateTokenModel):
             raise ValueError(f"Invalid Query {response}")
 
@@ -145,13 +154,17 @@ class DPO(object):
         result = requests.post(
             f"{self.__base_url}/API/v6/", data=xml, headers=self.__header
         )
+
         if result.status_code != 200:
             raise Exception(f"Error {result.status_code}")
 
-        # print(xml)
-        # convert xml to dict
-        transtoken = dict(xml_to_dict(result.text)).get("API3G")["TransToken"]
-        return transtoken
+        # convert xml response  to dict
+        query_response = dict(xml_to_dict(result.text)).get("API3G")
+        if not query_response.get("TransToken"):
+
+            raise Exception(f"Error {query_response}")
+
+        return query_response.get("TransToken")
 
     def create_payment_url(self, transtoken: str) -> str:
         """
@@ -161,3 +174,30 @@ class DPO(object):
         :return:
         """
         return f"{self.__base_url}/payv2.php?ID={transtoken}"
+
+    def email_to_token(self, query: dict) -> str:
+        if not isinstance(query, dict):
+            raise TypeError("Query must be a dict")
+
+        # get final query
+        final_query = self.get_final_query(query)
+
+        # validate query
+        response = EmailtoTokenModel.validate(final_query)
+        if not isinstance(response, EmailtoTokenModel):
+            raise ValueError(f"Invalid Query {response}")
+
+        # get query from modal
+        query = response.dict()
+
+        xml = create_email_to_token_xml(query)
+        print(xml)
+        result = requests.post(
+            f"{self.__base_url}/API/v6/", data=xml, headers=self.__header
+        )
+
+        if result.status_code != 200:
+            raise Exception(f"Error {result.status_code}")
+
+        response = dict(xml_to_dict(result.text))
+        return response

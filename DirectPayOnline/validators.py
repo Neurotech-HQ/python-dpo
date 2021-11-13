@@ -26,6 +26,8 @@ class CreateTokenModel(BaseModel):
     customer_country: str = None
     customer_dial_code: str = None
     customer_zipcode: str = None
+    customer_city: str = None
+    card_holder_name: str = None
     demand_payment_by_traveler: bool = None
     email_transaction: bool = None
     company_accref: str = None
@@ -83,3 +85,22 @@ class CreateTokenModel(BaseModel):
         except Exception as e:
             print(e)
             return str(e.__doc__)
+
+
+#  <CompanyToken>68B90B5E-25F6-4146-8AB1-C7A3A0C41A7F</CompanyToken>
+#   <Request>emailToToken</Request>
+#   <TransactionToken>EC9E975A-A7A2-4031-8972-BF123CDD9EDD</TransactionToken
+
+
+class EmailtoTokenModel(BaseModel):
+    company_token: str
+    request_type: str = "emailToToken"
+    transtoken: str
+
+    @staticmethod
+    def validate(body: dict):
+        try:
+            return EmailtoTokenModel(**body)
+        except Exception as e:
+            print(e.__doc__)
+            return e
