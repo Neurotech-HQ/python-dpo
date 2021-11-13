@@ -1,8 +1,9 @@
 """
 Module for holding XML templates for DirectPayOline requests.
 """
+# XML templates
 
-
+# ================XML templates (header and footer)================
 header_xml = """
     <?xml version="1.0" encoding="utf-8"?>
     <API3G>
@@ -21,6 +22,7 @@ footer_xml = """
     </API3G>
 """
 
+# ================XML templates (create_token )================
 create_token_xml_string = (
     header_xml
     + """
@@ -45,11 +47,28 @@ create_token_xml_string = (
     + footer_xml
 )
 
-
+# ================XML templates (email_to_token )================
 email_to_token_xml_string = (
     header_xml
     + """
     <TransactionToken>{transtoken}</TransactionToken>
+    </API3G>
+    """
+)
+
+# company_token: str
+# request_type: str = "refundToken"
+# transaction_token: str
+# amount: float
+# description: str = None
+
+# ================XML templates (refund_token )================
+refund_token_xml_string = (
+    header_xml
+    + """
+    <TransactionToken>{transtoken}</TransactionToken>
+    <refundAmount>{amount}</refundAmount>
+    <refundDetails>{description}</refundDetails>
     </API3G>
     """
 )
@@ -89,4 +108,12 @@ def create_mvisa_qrcode_xml(data: dict) -> str:
     Function for creating XML for creating token request.
     """
     data = email_to_token_xml_string.format(**data)
+    return remove_none_tags(data)
+
+
+def create_refund_token_xml(data: dict) -> str:
+    """
+    Function for creating XML for creating refund token request.
+    """
+    data = refund_token_xml_string.format(**data)
     return remove_none_tags(data)

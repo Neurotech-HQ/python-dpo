@@ -116,3 +116,19 @@ class CreateMvisaQrcodeModel(EmailtoTokenModel):
         except Exception as e:
             print(e.__doc__)
             return e
+
+
+class RefundTokenModel(BaseModel):
+    company_token: str
+    request_type: str = "refundToken"
+    transtoken: str
+    amount: float
+    description: str = None
+
+    @staticmethod
+    def validate(body: dict):
+        try:
+            return RefundTokenModel(**body)
+        except Exception as e:
+            print(e.__doc__)
+            return e

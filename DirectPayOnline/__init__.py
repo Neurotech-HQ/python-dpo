@@ -11,11 +11,17 @@ From Multiple Payments Channel (Mpesa, TigoPesa, AirtelMoney) without having to 
 import os
 import requests
 from .utils import xml_to_dict
-from .validators import CreateTokenModel, EmailtoTokenModel, CreateMvisaQrcodeModel
+from .validators import (
+    CreateTokenModel,
+    EmailtoTokenModel,
+    CreateMvisaQrcodeModel,
+    RefundTokenModel,
+)
 from .xml_templates import (
     create_token_xml,
     create_email_to_token_xml,
     create_mvisa_qrcode_xml,
+    create_refund_token_xml,
 )
 
 
@@ -227,6 +233,32 @@ class DPO(object):
         query = response.dict()
 
         xml = create_mvisa_qrcode_xml(query)
+        result = requests.post(
+            f"{self.__base_url}/API/v6/", data=xml, headers=self.__header
+        )
+
+        if result.status_code != 200:
+            raise Exception(f"Error {result.status_code}")
+
+        response = dict(xml_to_dict(result.text))
+        return response
+
+    def refund_token(self, query: dict) -> str:
+        if not isinstance(query, dict):
+            raise TypeError("Query must be a dictionary")
+
+        # get final query
+        final_query = self.get_final_query(query)
+
+        # validate query
+        response = RefundTokenModel.validate(final_query)
+        if not isinstance(response, RefundTokenModel):
+            raise ValueError(f"Invalid Query {response}")
+
+        # get query from modal
+        query = response.dict()
+
+        xml = create_refund_token_xml(query)
         result = requests.post(
             f"{self.__base_url}/API/v6/", data=xml, headers=self.__header
         )

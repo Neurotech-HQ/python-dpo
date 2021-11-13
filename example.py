@@ -26,3 +26,12 @@ print(response)
 # ========== createmvisaQRCODE ====================
 response = gateway.create_mvisa_qrcode(user_query)
 print(response)
+
+# ========== refund_token ====================
+refund_query = {
+    "amount": 34500,
+    "description": "Buying books",
+    "transtoken": transtoken,
+}
+response = gateway.refund_token(refund_query)
+print(response)
