@@ -196,3 +196,11 @@ def create_mobile_payment_options_xml(data: dict) -> str:
     """
     data = verify_token_xml_tring.format(**data)
     return remove_none_tags(data)
+
+
+def create_charge_token_auth_xml(data: dict) -> str:
+    """
+    Function for creating XML for Charge token auth
+    """
+    data = verify_token_xml_tring.format(**data)
+    return remove_none_tags(data)

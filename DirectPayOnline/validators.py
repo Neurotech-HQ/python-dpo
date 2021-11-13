@@ -1,5 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel
+from pydantic.utils import truncate
 
 
 class CreateTokenModel(BaseModel):
@@ -142,17 +143,31 @@ class VerifyXpayModel(BaseModel):
         return VerifyXpayModel(**body)
 
 
-class CancelTokenModel(VerifyTokenModel):
+class CancelTokenModel(BaseModel):
     request_type: str = "cancelToken"
+    company_token: str
+    transtoken: str
 
     @staticmethod
     def validate(body: dict):
         return CancelTokenModel(**body)
 
 
-class MobilePaymentsOptionsModel(VerifyTokenModel):
+class MobilePaymentsOptionsModel(BaseModel):
     request_type: str = "GetMobilePaymentOptions"
+    company_token: str
+    transtoken: str
 
     @staticmethod
     def validate(body: dict):
         return MobilePaymentsOptionsModel(**body)
+
+
+class ChargeTokenAuthModel(BaseModel):
+    request_type: str = "chargeTokenAuth"
+    company_token: str
+    transtoken: str
+
+    @staticmethod
+    def validate(body: dict):
+        return ChargeTokenAuthModel(**body)

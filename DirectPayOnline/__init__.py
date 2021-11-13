@@ -21,6 +21,7 @@ from .validators import (
     VerifyXpayModel,
     CancelTokenModel,
     MobilePaymentsOptionsModel,
+    ChargeTokenAuthModel,
 )
 from .xml_templates import (
     create_token_xml,
@@ -32,6 +33,7 @@ from .xml_templates import (
     create_verify_xpay_xml,
     create_cancel_token_xml,
     create_mobile_payment_options_xml,
+    create_charge_token_auth_xml,
 )
 
 
@@ -278,7 +280,18 @@ class DPO(object):
 
         # validate the query
         query = MobilePaymentsOptionsModel.validate(final_query).dict()
-
+        print(query)
         # construct xml and send request to DPO API
         xml_data = create_mobile_payment_options_xml(query)
         return self.post(xml_data)
+
+    def charge_token_auth(self, user_query: dict):
+        # get final query
+        final_query = self.get_final_query(user_query)
+
+        # validate the query
+        query = ChargeTokenAuthModel.validate(final_query)
+
+        # construct xml and send it to DPO API
+        xml = create_charge_token_auth_xml(query)
+        return self.post(xml)
