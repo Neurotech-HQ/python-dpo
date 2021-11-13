@@ -48,6 +48,10 @@ query = {"transtoken": transtoken}
 response = gateway.verify_token(query)
 print(response)
 
+# ============= cancel token ==========================
+response = gateway.verify_token(query)
+print(response)
+
 
 # ============== verify XPay ========================
 query = {"xpay_id": "124334323324"}

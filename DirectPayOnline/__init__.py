@@ -19,6 +19,7 @@ from .validators import (
     UpdateTokenModel,
     VerifyTokenModel,
     VerifyXpayModel,
+    CancelTokenModel,
 )
 from .xml_templates import (
     create_token_xml,
@@ -28,6 +29,7 @@ from .xml_templates import (
     create_update_token_xml,
     create_verify_token_xml,
     create_verify_xpay_xml,
+    create_cancel_token_xml,
 )
 
 
@@ -250,4 +252,15 @@ class DPO(object):
 
         # construct xml request body and send it to DPO API
         xml_data = create_verify_xpay_xml(query)
+        return self.post(xml_data)
+
+    def cancel_token(self, user_query: dict):
+        # get final query
+        final_query = self.get_final_query(user_query)
+
+        # validate query
+        query = CancelTokenModel.validate(final_query).dict()
+
+        # construct xml request body and send it to DPO API
+        xml_data = create_cancel_token_xml(query)
         return self.post(xml_data)

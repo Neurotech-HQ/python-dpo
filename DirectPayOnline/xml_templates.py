@@ -180,3 +180,11 @@ def create_verify_xpay_xml(data: dict) -> str:
     """
     data = verify_xpay_xml_string.format(**data)
     return remove_none_tags(data)
+
+
+def create_cancel_token_xml(data: dict) -> str:
+    """
+    Function for creating XML for cancelling token request.
+    """
+    data = verify_token_xml_tring.format(**data)
+    return remove_none_tags(data)
