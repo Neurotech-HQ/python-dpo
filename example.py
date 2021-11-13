@@ -11,7 +11,8 @@ user_query = {
     "customer_name": "Jordan Kalebu",
     "customer_email": "isaackeinstein@gmail.com",
 }
-transtoken = gateway.create_token(user_query)
+response = gateway.create_token(user_query).get("API3G")
+transtoken = response.get("TransToken")
 
 
 # ========== create a payment url ====================
@@ -34,4 +35,9 @@ refund_query = {
     "transtoken": transtoken,
 }
 response = gateway.refund_token(refund_query)
+print(response)
+
+# ============ update token ===================
+user_query.update({"customer_name": "Mikael Jordan"})
+response = gateway.update_token(user_query)
 print(response)

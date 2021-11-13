@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 from pydantic import BaseModel
 
@@ -20,7 +19,7 @@ class CreateTokenModel(BaseModel):
     transaction_auto_charge_day: datetime = None
     customer_first_name: str = None
     customer_last_name: str = None
-    custom_address: str = None
+    customer_address: str = None
     customer_email: str = None
     customer_phone: str = None
     customer_country: str = None
@@ -80,16 +79,17 @@ class CreateTokenModel(BaseModel):
 
     @staticmethod
     def validate(body: dict):
-        try:
-            return CreateTokenModel(**body)
-        except Exception as e:
-            print(e)
-            return str(e.__doc__)
+        return CreateTokenModel(**body)
 
 
-#  <CompanyToken>68B90B5E-25F6-4146-8AB1-C7A3A0C41A7F</CompanyToken>
-#   <Request>emailToToken</Request>
-#   <TransactionToken>EC9E975A-A7A2-4031-8972-BF123CDD9EDD</TransactionToken
+class UpdateTokenModel(CreateTokenModel):
+    request_type = "updateToken"
+    transtoken: str
+    user_token: str = None
+
+    @staticmethod
+    def validate(body: dict):
+        return UpdateTokenModel(**body)
 
 
 class EmailtoTokenModel(BaseModel):
@@ -99,11 +99,7 @@ class EmailtoTokenModel(BaseModel):
 
     @staticmethod
     def validate(body: dict):
-        try:
-            return EmailtoTokenModel(**body)
-        except Exception as e:
-            print(e.__doc__)
-            return e
+        return EmailtoTokenModel(**body)
 
 
 class CreateMvisaQrcodeModel(EmailtoTokenModel):
@@ -111,11 +107,7 @@ class CreateMvisaQrcodeModel(EmailtoTokenModel):
 
     @staticmethod
     def validate(body: dict):
-        try:
-            return CreateMvisaQrcodeModel(**body)
-        except Exception as e:
-            print(e.__doc__)
-            return e
+        return CreateMvisaQrcodeModel(**body)
 
 
 class RefundTokenModel(BaseModel):
@@ -127,8 +119,4 @@ class RefundTokenModel(BaseModel):
 
     @staticmethod
     def validate(body: dict):
-        try:
-            return RefundTokenModel(**body)
-        except Exception as e:
-            print(e.__doc__)
-            return e
+        return RefundTokenModel(**body)

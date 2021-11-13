@@ -16,12 +16,14 @@ from .validators import (
     EmailtoTokenModel,
     CreateMvisaQrcodeModel,
     RefundTokenModel,
+    UpdateTokenModel,
 )
 from .xml_templates import (
     create_token_xml,
     create_email_to_token_xml,
     create_mvisa_qrcode_xml,
     create_refund_token_xml,
+    create_update_token_xml,
 )
 
 
@@ -138,6 +140,15 @@ class DPO(object):
         config_query.update(user_query)
         return config_query
 
+    def post(self, xml_data):
+        response = requests.post(
+            f"{self.__base_url}/API/v6/", data=xml_data, headers=self.__header
+        )
+        if response.status_code != 200:
+            raise Exception(f"Error {response.status_code}, {response.text}")
+        # convert xml response  to dict
+        return dict(xml_to_dict(response.text))
+
     def create_token(self, user_query: dict) -> dict:
         """
         Create Token
@@ -145,36 +156,15 @@ class DPO(object):
         :param query:
         :return:
         """
-        if not isinstance(user_query, dict):
-            raise TypeError("Query must be a dictionary")
-
         # get final query
         final_query = self.get_final_query(user_query)
 
         # validate query
-        response = CreateTokenModel.validate(final_query)
-        if not isinstance(response, CreateTokenModel):
-            raise ValueError(f"Invalid Query {response}")
+        query = CreateTokenModel.validate(final_query).dict()
 
-        # get query from modal
-        query = response.dict()
-
-        # create token
-        xml = create_token_xml(query)
-        result = requests.post(
-            f"{self.__base_url}/API/v6/", data=xml, headers=self.__header
-        )
-
-        if result.status_code != 200:
-            raise Exception(f"Error {result.status_code}")
-
-        # convert xml response  to dict
-        query_response = dict(xml_to_dict(result.text)).get("API3G")
-        if not query_response.get("TransToken"):
-
-            raise Exception(f"Error {query_response}")
-
-        return query_response.get("TransToken")
+        # construct xml request body and send it to DPO API
+        xml_data = create_token_xml(query)
+        return self.post(xml_data)
 
     def create_payment_url(self, transtoken: str) -> str:
         """
@@ -186,30 +176,15 @@ class DPO(object):
         return f"{self.__base_url}/payv2.php?ID={transtoken}"
 
     def email_to_token(self, query: dict) -> str:
-        if not isinstance(query, dict):
-            raise TypeError("Query must be a dict")
-
         # get final query
         final_query = self.get_final_query(query)
 
         # validate query
-        response = EmailtoTokenModel.validate(final_query)
-        if not isinstance(response, EmailtoTokenModel):
-            raise ValueError(f"Invalid Query {response}")
+        query = EmailtoTokenModel.validate(final_query).dict()
 
-        # get query from modal
-        query = response.dict()
-
-        xml = create_email_to_token_xml(query)
-        result = requests.post(
-            f"{self.__base_url}/API/v6/", data=xml, headers=self.__header
-        )
-
-        if result.status_code != 200:
-            raise Exception(f"Error {result.status_code}")
-
-        response = dict(xml_to_dict(result.text))
-        return response
+        # construct xml request body and send it to DPO API
+        xml_data = create_email_to_token_xml(query)
+        return self.post(xml_data)
 
     def create_mvisa_qrcode(self, user_query: dict) -> str:
         """
@@ -218,53 +193,36 @@ class DPO(object):
         :param query:
         :return:
         """
-        if not isinstance(user_query, dict):
-            raise TypeError("Query must be a dictionary")
 
         # get final query
         final_query = self.get_final_query(user_query)
 
         # validate query
-        response = CreateMvisaQrcodeModel.validate(final_query)
-        if not isinstance(response, CreateMvisaQrcodeModel):
-            raise ValueError(f"Invalid Query {response}")
+        query = CreateMvisaQrcodeModel.validate(final_query).dict()
 
-        # get query from modal
-        query = response.dict()
-
-        xml = create_mvisa_qrcode_xml(query)
-        result = requests.post(
-            f"{self.__base_url}/API/v6/", data=xml, headers=self.__header
-        )
-
-        if result.status_code != 200:
-            raise Exception(f"Error {result.status_code}")
-
-        response = dict(xml_to_dict(result.text))
-        return response
+        # construct xml request body and send it to DPO API
+        xml_data = create_mvisa_qrcode_xml(query)
+        response = self.post(xml_data)
 
     def refund_token(self, query: dict) -> str:
-        if not isinstance(query, dict):
-            raise TypeError("Query must be a dictionary")
-
         # get final query
         final_query = self.get_final_query(query)
 
         # validate query
-        response = RefundTokenModel.validate(final_query)
-        if not isinstance(response, RefundTokenModel):
-            raise ValueError(f"Invalid Query {response}")
+        query = RefundTokenModel.validate(final_query).dict()
 
-        # get query from modal
-        query = response.dict()
+        # construct xml request body and send it to DPO API
+        xml_data = create_refund_token_xml(query)
+        return self.post(xml_data)
 
-        xml = create_refund_token_xml(query)
-        result = requests.post(
-            f"{self.__base_url}/API/v6/", data=xml, headers=self.__header
-        )
+    def update_token(self, query: dict) -> str:
+        # get final query
+        final_query = self.get_final_query(query)
 
-        if result.status_code != 200:
-            raise Exception(f"Error {result.status_code}")
+        # validate query
+        query = UpdateTokenModel.validate(final_query).dict()
 
-        response = dict(xml_to_dict(result.text))
-        return response
+        # construct xml request body and send it to DPO API
+        xml_data = create_update_token_xml(query)
+        print(xml_data)
+        return self.post(xml_data)

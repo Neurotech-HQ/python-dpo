@@ -73,6 +73,28 @@ refund_token_xml_string = (
     """
 )
 
+# ============== XML templates (update_token) ======================
+update_token_xml_string = (
+    header_xml
+    + """ 
+  <TransactionToken>{transtoken}</TransactionToken>
+  <PaymentAmount>{amount}</PaymentAmount>
+  <CompanyRef>{company_ref}</CompanyRef>
+  <CustomerEmail>{customer_email}</CustomerEmail>
+  <CustomerFirstName>{customer_first_name}</CustomerFirstName>
+  <CustomerLastName>{customer_last_name}</CustomerLastName>
+  <CustomerAddress>{customer_address}</CustomerAddress>
+  <CustomerCity>{customer_city}</CustomerCity>
+  <CustomerCountry>{customer_country}</CustomerCountry>
+  <CustomerDialCode>{customer_dial_code}</CustomerDialCode>
+  <CustomerPhone>{customer_phone}</CustomerPhone>
+  <CustomerZip>{customer_zipcode}</CustomerZip>
+  <CompanyAccRef>{company_accref}</CompanyAccRef>
+  <UserToken>{user_token}</UserToken>
+  </API3G>
+    """
+)
+
 
 def remove_none_tags(xml_string: str) -> str:
     """
@@ -83,7 +105,7 @@ def remove_none_tags(xml_string: str) -> str:
     for line in xml_string_splitted:
         if not line.strip() or ">None</" in line:
             continue
-        xml_string_cleaned.append(line)
+        xml_string_cleaned.append(line.strip())
     return "\n".join(xml_string_cleaned)
 
 
@@ -116,4 +138,12 @@ def create_refund_token_xml(data: dict) -> str:
     Function for creating XML for creating refund token request.
     """
     data = refund_token_xml_string.format(**data)
+    return remove_none_tags(data)
+
+
+def create_update_token_xml(data: dict) -> str:
+    """
+    Function for creating XML for updating token request.
+    """
+    data = update_token_xml_string.format(**data)
     return remove_none_tags(data)
