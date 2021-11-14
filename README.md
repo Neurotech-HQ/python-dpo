@@ -51,8 +51,14 @@ COMPANY_REFERENCE=34TESTREFF
 >>> load_dotenv() # loading environment variables 
 >>> from DirectPayOnline import DPO
 >>> dpo = DPO(sandbox=False)
->>> token = dpo.create_token({'amount': 400, "service_description": "Sarufi.io subscription"})
->>> dpo.create_payment_url(token)
+>>> response = dpo.create_token(
+    {
+      'amount': 400, 
+      "service_description": "Sarufi.io subscription"
+    }
+  )
+>>> transtoken = token.get('API3G')['TransToken']
+>>> dpo.create_payment_url(transtoken)
 'https://secure.3gdirectpay.com/payv2.php?ID=1D0CC035-40E5-44A3-B5EF-034A34AD33E9'
 ```
 

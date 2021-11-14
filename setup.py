@@ -10,12 +10,12 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="DirectPayOnline",
-    version="0.3",
+    version="0.4",
     description="A python package to easy the integration with Direct Online Pay (Mpesa, TigoPesa, AirtelMoney, Card Payments)",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Kalebu/python-dpo",
-    download_url="https://github.com/Kalebu/python-dpo/archive/refs/tags/v0.1.tar.gz",
+    download_url="https://github.com/Kalebu/python-dpo/archive/refs/tags/v0.2.tar.gz",
     author="Jordan Kalebu",
     author_email="isaackeinstein@gmail.com",
     license="MIT",
