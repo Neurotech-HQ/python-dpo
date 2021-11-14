@@ -2,6 +2,10 @@
 
 # [python-dpo](https://github.com/Kalebu/python-dpo)
 
+[![Downloads](https://pepy.tech/badge/directpayonline)](https://pepy.tech/project/directpayonline)
+[![Downloads](https://pepy.tech/badge/directpayonline/month)](https://pepy.tech/project/directpayonline)
+[![Downloads](https://pepy.tech/badge/directpayonline/week)](https://pepy.tech/project/directpayonline)
+
 A python package to easy the integration with Direct Online Pay (DPO)  which easily allow you easily integrate  with payment options once without having to deal with each of them individually;
 
 - [Mpesa](https://vodacom.co.tz/mpesa)
